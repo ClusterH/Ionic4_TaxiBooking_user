@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Fare Estimate</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="first_div">
+    <ion-row>
+      <ion-col size="12" no-padding>
+        <h2 class="h2_class">${{totalFare}}</h2>
+        <!-- <h2 class="h2_class">${{totalFare}} - ${{1.05*totalFare | number : '1.2-2'}}</h2> -->
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" no-padding>
+        <p no-margin class="h2_class" text-uppercase>Approx travel time: <strong>{{approx_travel_time}}</strong></p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-card class="map_card">
+    <ion-item>
+      <div slot="start">
+        <ion-label>
+          <ion-icon name="arrow-dropdown-circle" class="icon_drop"></ion-icon>
+          <div class="virtical_dash" slot="start"></div>
+          <ion-icon name="pin" class="icon_pin"></ion-icon>
+        </ion-label>
+      </div>
+      <ion-label>
+        <p class="horizontal_line">{{serviceProvider.showpickup}} </p>
+        <p>{{serviceProvider.showdestination}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="card_style">
+    <ion-list>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-img src={{serviceProvider.path}} class="footer_image"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <p class="footer_para">{{serviceProvider.carname}}</p>
+          <p class="footer_para">Total Travel Distance: {{serviceProvider.tripDistance}} km</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-item class="item_spec">
+      <ion-label text-center>
+        <ion-icon name="clock" expand="icon-only" class="icon_Spec"></ion-icon>
+          <p class="dark_color">{{serviceProvider.estimateBooking.duration}}</p>
+          <p class="dark_small">Arrive Time</p>
+      </ion-label>
+      <div class="vertical_line"></div>
+      <ion-label text-center>
+        <ion-icon name="logo-usd" expand="icon-only" class="icon_Spec"></ion-icon>
+          <p class="dark_color">{{serviceProvider.estimateBooking.fare}}</p>
+          <p class="dark_small">Estimate Fare</p>
+      </ion-label>
+      <div class="vertical_line"></div>
+      <ion-label text-center>
+        <ion-icon name="man" expand="icon-only" class="icon_Spec"></ion-icon>
+          <p class="dark_color">{{serviceProvider.estimateBooking.member}}</p>
+          <p class="dark_small">Member</p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+</ion-content>
+<ion-footer>
+  <p text-center class="footer_para">Note: This is an estimate of the fare. Actual fare may vary slightly based on
+    traffic and discount</p>
+</ion-footer>

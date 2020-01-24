@@ -1,0 +1,41 @@
+<ion-content style="background:transparent">
+  <div class="div_class">
+    <ion-card class="card_style">
+      <ion-list>
+        <ion-item>
+          <!-- <ion-avatar slot="start"> -->
+            <ion-label>
+
+            <ion-img [src]="serviceProvider.path" class="footer_image"></ion-img>
+          <!-- </ion-avatar> -->
+            <span>{{ serviceProvider.carname }}</span>
+            <!-- <p> Toyota Prious</p> -->
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-item class="item_Spec">
+        <ion-label text-center>
+          <ion-icon name="clock" expand="icon-only" class="icon_Spec"></ion-icon>
+          <p class="dark_color">{{serviceProvider.estimateBooking.duration}}</p>
+          <p class="dark_small">Estimate Time</p>
+        </ion-label>
+        <div class="vertical_line"></div>
+        <ion-label text-center>
+          <ion-icon name="logo-usd" expand="icon-only" class="icon_Spec"></ion-icon>
+          <p class="dark_color">{{serviceProvider.estimateBooking.fare}}</p>
+          <p class="dark_small">Estimate Fare</p>
+        </ion-label>
+        <div class="vertical_line"></div>
+        <ion-label text-center>
+          <ion-icon name="man" expand="icon-only" class="icon_Spec"></ion-icon>
+          <p class="dark_color">{{serviceProvider.estimateBooking.member}}</p>
+          <p class="dark_small">Member</p>
+        </ion-label>
+      </ion-item>
+      <div class="button_Pos">
+        <ion-button fill="clear" (click)="closeModal()" slot="end" color="medium">CANCEL</ion-button>
+        <ion-button fill="clear" (click)="routeModal()" slot="end" color="dark">REQUEST RIDE</ion-button>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>

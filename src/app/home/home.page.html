@@ -1,0 +1,156 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Ion-Cab
+    </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button color="light" (click)="reset()">
+        <ion-icon slot="icon-only" name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="card_pickup1" (click)="gotoEdit('pickup',true,'modal')" *ngIf="pickup && !confirm_destination">
+    <ion-item>
+      <ion-icon slot="start" expand="icon-only" name="search"></ion-icon>
+      <ion-label text-center>
+        <h2 class="h2_color">Pick-Up Location</h2>
+        <h3>{{serviceProvider.showpickup}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="card_Destination1" (click)="gotoEdit('destination',false)" *ngIf="pickup && !confirm_destination">
+    <ion-item class="mapcardItem">
+      <ion-icon slot="start" expand="icon-only" name="search"></ion-icon>
+      <ion-label text-center>
+        <h2 class="h2_color" *ngIf="serviceProvider.showdestination == ''">Destination Location</h2>
+        <h3>{{serviceProvider.showdestination}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="card_pickup2" (click)="gotoEdit('pickup',true)" *ngIf="!pickup && !confirm_destination">
+    <ion-item class="mapcardItem">
+      <ion-icon slot="start" expand="icon-only" name="search"></ion-icon>
+      <ion-label text-center>
+        <h2 class="h2_color" *ngIf="serviceProvider.showpickup == ''">Pick-up Location</h2>
+        <h3>{{serviceProvider.showpickup}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="card_destination2" (click)="gotoEdit('destination',false,'modal')" *ngIf="!pickup && !confirm_destination">
+    <ion-item>
+      <ion-icon slot="start" expand="icon-only" name="search"></ion-icon>
+      <ion-label text-center>
+        <h2 class="h2_color">Destination Location</h2>
+        <h3>{{serviceProvider.showdestination}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+ 
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" 
+   (centerChange)="centerChange($event)"  [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions" >
+    <agm-marker [latitude]="changeLat" [longitude]="changeLng" [iconUrl]="markerUrl_trip"  *ngIf="marker && !driver_position && !(origin && origin.lat && destination && destination.lat)">
+    </agm-marker>
+    <div *ngIf = "confirm_destination">
+      <agm-direction (onResponse)="onResponse($event)" *ngIf="origin && origin.lat && destination && destination.lat"
+        [origin]="origin" [destination]="destination" [markerOptions]="markerOptions" [renderOptions]="renderOptions">
+      </agm-direction>
+    </div>
+
+    <div *ngIf="(driver_position && (origin && origin.lat && driver_informations))">
+      <div  *ngFor="let pos of driver_informations; let i = index">
+        <agm-marker  [latitude]="pos.location.lat" [longitude]="pos.location.lng" [iconUrl]="markerUrl" (markerClick)="clickedMarker(infowindow)" *ngIf="pos.check_distance" >
+      
+          <agm-info-window class="driver_info_window" #infowindow>
+            <div class="personal_info">
+              <img [src] = "pos.profileImg"  class="driver_marker_info">
+              
+              <div>
+                <!-- <rating slot="end"  [(ngModel)]="starsCount" [max]="pos.rating" iconClass="star" fullIcon="☆" emptyIcon="★"
+                  [readonly]="false" [disabled]="false" [required]="true" [float]="true"
+                  [titles]="['one', 'two', 'three', 'four', 'five']">
+                </rating> -->
+                <p>name: <strong>{{pos.name}}</strong></p>
+                <!-- <p>Phone: <strong>{{pos.phone}}</strong></p> -->
+                <p>License: <strong>{{pos.license_info}}</strong></p>
+                
+                <p>Distance: <strong>{{pos.distance}}</strong></p>
+                <p>Arrive Time: <strong>{{pos.duration}}</strong></p>
+              </div>
+            </div>
+            <div class="booking_button">
+              <ion-button color="primary" expand="full" size="small" (click)="booking_start(pos)">Booking Now?</ion-button>
+            </div>
+          </agm-info-window>
+          
+        </agm-marker>
+        
+        <agm-direction [origin]="origin" [destination]="pos.location"  [renderOptions]="renderOptions_driver" *ngIf="origin && origin.lat && pos && pos.location.lat">
+          </agm-direction>
+      </div>
+    </div>
+  </agm-map>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" class="fab_icon">
+    <ion-fab-button color="primary" (click)="confirmCurrentTrip()">Done
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab_icon">
+    <ion-fab-button (click)="getCurrentLoaction()">
+      <ion-icon name="locate" style="font-size: 35px;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-footer>
+    <div *ngIf="origin && origin.lat && destination && destination.lat && confirm_destination" class="distance"> Total distance :
+    {{tripDistance}}</div>
+  
+  <ion-slides [options]="slideOpts">
+    <ion-slide >
+      <ion-label class="model_slide_content" (click)="openImageCtrl('SEDAN', 'assets/image/model/sedan_black.jpg')" >
+        <img src="assets/image/model/sedan_black.jpg" class="model_image">
+        <label class="model_title">SEDAN</label>
+      </ion-label>
+    </ion-slide>
+    <ion-slide >
+      <ion-label class="model_slide_content" (click)="openImageCtrl('SUV', 'assets/image/model/suv_black1_720.jpg')" >
+        <img src="assets/image/model/suv_black1_720.jpg" class="model_image">
+        <label class="model_title">SUV</label>
+      </ion-label>
+    </ion-slide>
+    <ion-slide >
+      <ion-label class="model_slide_content" (click)="openImageCtrl('HATCHBACK', 'assets/image/model/hatchback_black.jpg')" >
+        <img src="assets/image/model/hatchback_black.jpg" class="model_image">
+        <label class="model_title">HATCHBACK</label>
+      </ion-label>
+    </ion-slide>
+    <ion-slide >
+      <ion-label class="model_slide_content" (click)="openImageCtrl('CONVERTIBLE', 'assets/image/model/convertible_black1.jpg')" >
+        <img src="assets/image/model/convertible_black1.jpg" class="model_image">
+        <label class="model_title">CONVERTIBLE</label>
+      </ion-label>
+    </ion-slide>
+
+   
+    <!-- <ion-slide *ngFor="let img of images">
+      <span class="model_slide_content" (click)="openImageCtrl('{{img.model}}', '{{img.image}}')" >
+        <img [src]="img.image" class="model_image">
+        <label class="model_title">{{img.model}}</label>
+      </span>
+    </ion-slide> -->
+  </ion-slides>
+  <!-- <ion-scroll scrollX="true" style="white-space: nowrap; height: 200px;" *ngFor="let s of scrolls">
+    <img src="assets/images/model/{{img}}">
+  </ion-scroll> -->
+</ion-footer>

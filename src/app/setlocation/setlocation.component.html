@@ -1,0 +1,29 @@
+<!-- /**
+* Ion Cab (https://store.enappd.com/product/taxi-booking-app/)
+*
+* Copyright © 2018-present Enappd. All rights reserved.
+*
+* This source code is licensed as per the terms found in the
+* LICENSE.md file in the root directory of this source tree.
+*//**-->
+<ion-content>
+    <ion-searchbar class="background-transparent" [(ngModel)]="searchItem" [showCancelButton]="true"
+      (ionInput)="searcOnChnage()" (ionCancel)="dismiss()" selected="true" autofocus></ion-searchbar>
+    <ion-card *ngIf="autocompleteItems && autocompleteItems.length">
+      <ion-list style="box-shadow: 0 0px 6px #bdbdbd!important;">
+        <ion-item *ngFor="let item of autocompleteItems" class="item-requset-ride" tappable (click)="chooseItem(item)">
+          <ion-icon ios="ios-pin" md="md-pin" slot="start" style="margin-top:20px; font-size:1.3em"></ion-icon>
+          <ion-label>
+            <p>{{item}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+    <ion-card padding>
+      <ion-text text-center>
+        Search a location in input box
+      </ion-text>
+    </ion-card>
+    <ion-button expand="full" fill="clear" color="medium" (click)="dismiss()">Close</ion-button>
+  
+  </ion-content>

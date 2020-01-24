@@ -1,0 +1,172 @@
+/**
+*Ionic 4 Taxi Booking Complete App (https://store.enappd.com/product/taxi-booking-complete-dashboard)
+*
+* Copyright © 2019-present Enappd. All rights reserved.
+*
+* This source code is licensed as per the terms found in the
+* LICENSE.md file in the root directory of this source tree.
+*/
+
+
+
+
+.header-md:after {
+    left: 0;
+    bottom: -8px;
+    background-position: left 0 top 0;
+    position: absolute;
+    width: 100%;
+    height: 8px;
+    background-image: none !important;
+    background-repeat: repeat-x;
+    content: "";
+}
+.first_div{
+    background: var(--ion-color-all);
+    text-align: center;
+}
+.h2_class{
+   color: white;
+  font-weight: bold;
+}
+ion-content{
+  --background: #f4f4f4;
+}
+ 
+ 
+.list-md:not(.list-inset):not(.list-md-lines-none) .item:last-child {
+    --inner-border-width: 0 !important;
+    --border-width: 0 0 1px 0 !important;
+}
+ion-icon.icon_Spec{
+  font-size: 30px;
+    color: var(--ion-color-all);
+}
+.vertical_line{
+    width: 1px;
+    background: gray;
+    height: 56%;
+     margin-right: 12px;
+  }
+.dark_color{
+  color:var( --ion-color-dark)
+}
+.dark_small{
+  font-size:10px;
+}
+.div_class{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100% !important;
+}
+.button_Pos{
+  display: flex;
+  justify-content: flex-end;
+}
+.card_style{
+  background: white;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+ion-item.dafault_item{
+  --inner-border-width: 0 !important;
+  --border-width: 0 0 1px 0 !important;
+}
+.virtical_dash{
+height: 22px !important;
+  width: 74%;
+  border-style: dashed;
+  display: flex;
+  border-left: dashed 1px;
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
+  margin-left: 8px;
+}
+ion-label{
+  margin: 3px 3px 3px 0px !important;
+}
+.icon_drop{
+font-size: 18px;
+  color: green;
+}
+.icon_pin{
+font-size: 18px;
+  color:  var(--ion-color-all);
+}
+.car_icon{
+position: absolute;
+  right: 4%;
+  top: 20%;
+}
+ 
+.sc-ion-label-md-s h2 {
+  margin: 7px 3px 0px 5px;
+  font-size: 16px;
+  font-weight: 450;
+  padding-bottom: 5px;
+  color: black;
+}
+ion-text{font-size: 14px;}
+ion-card{
+box-shadow: 0px 1px 1px 1px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12) !important;
+}
+.map_card{
+  background: white;
+  z-index: 999;
+  width: calc(100% - 5%);
+ }
+ion-footer{
+  background: #f4f4f4 !important;
+  min-height: 4em;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+    .horizontal_line{
+      border-bottom: solid 2px #66666661;
+    }
+    p{
+      margin: 0 0 2px;
+      font-size: 14px;
+      line-height: 35px;
+      text-overflow: inherit;
+      overflow: inherit;
+    }
+    .footer_para{
+      line-height: 20px !important;
+    }
+    .icon_color{
+      color:  var(--ion-color-all);
+
+    }
+    ion-col.col_line{
+      border-right: solid 1px;
+    }
+    .no_pad{
+      --padding-start: 0;
+    }
+    ion-button{
+      --padding-start: -0.1em !important;
+      --color:var(--ion-color-medium-shade) !important;
+      --background-focused:var(--ion-color-medium-shade) !important;
+      --color-activated:var(--ion-color-medium-shade) !important;
+    }
+    .item_spec ion-label{
+      flex-direction: column;
+      align-items: center;
+      display: flex;
+      justify-content: space-evenly;
+      padding: 20px 0;
+      .dark_small{
+        line-height: 15px;
+      }
+    }
+ ion-avatar {
+   --border-radius: 5px!important;
+   width: 30% !important;
+   height: 30% !important;
+ }

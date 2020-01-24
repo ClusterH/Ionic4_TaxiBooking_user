@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon slot="start" expand="icon-only" (click)="dismiss()" name="arrow-back" class="icon_header" size="large"></ion-icon>
+    </ion-buttons>
+    <ion-title>Help</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-button *ngFor="let item of items" expand="full">
+      <span text-start>{{item.title}}</span>
+    </ion-button>
+  </ion-list>
+</ion-content>

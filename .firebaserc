@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "ion-driver",
+    "dev": "ion-driver",
+    "d": "iondriverhapp",
+    "deploy functions": "iondriverhapp",
+    "deploy": "iondriverhapp"
+  }
+}

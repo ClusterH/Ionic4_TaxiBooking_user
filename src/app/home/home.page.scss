@@ -1,0 +1,228 @@
+/**
+*Ionic 4 Taxi Booking Complete App (https://store.enappd.com/product/taxi-booking-complete-dashboard)
+*
+* Copyright © 2019-present Enappd. All rights reserved.
+*
+* This source code is licensed as per the terms found in the
+* LICENSE.md file in the root directory of this source tree.
+*/
+
+
+agm-map {
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.location-hint-text {
+    top: calc(15% + 75px);
+    position: absolute;
+    width: 90%;
+    z-index: 111;
+    right: 5%;
+    /* left: 0; */
+    /* margin: auto; */
+    text-align: center;
+    font-size: 13px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+ion-fab.fab_icon {
+    margin-top: -73px;
+}
+
+ion-fab-button {
+    --background: var(--ion-color-success-contrast);
+    --background-activated: var(--ion-color-tertiary-contrast);
+    --background-focused: var(--background-activated);
+    --color: var(--ion-color-light-contrast);
+    --color-activated: var(--ion-color-light-contrast);
+    --color-focused: var(--color-activated);
+    --box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+    --transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1), background-color 280ms cubic-bezier(0.4, 0, 0.2, 1), color 280ms cubic-bezier(0.4, 0, 0.2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.card_pickup1 {
+    background: white;
+    z-index: 999;
+    width: calc(100% - 5%) !important;
+    min-height: 65px;
+    max-height: 65px;
+    position: absolute;
+    top: 5%;
+}
+
+.card_pickup2 {
+    width: calc(100% - 25%);
+    right: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    top: 6%;
+    z-index: 111;
+}
+
+.card_Destination1 {
+    top: calc(5% + 75px);
+    position: absolute;
+    width: calc(100% - 34%);
+    z-index: 111;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+
+.card_destination2 {
+    width: calc(100% - 5%);
+    left: 0;
+    top: calc(6% + 48px);
+    position: absolute;
+    z-index: 111;
+    margin: 0 10px;
+}
+
+.card1_item {
+    --inner-border-width: 0 0 0px 0 !important;
+}
+
+.mapcardItem {
+    --background: rgba(0, 0, 0, .5) !important;
+    color: var(--ion-color-all) !important;
+}
+
+ion-label {
+    margin: 4px 4px 4px 0 !important;
+}
+
+.h2_color {
+    color: var(--ion-color-all) !important
+}
+
+.horizontal_line {
+    width: 55%;
+    height: 5px;
+    background: #f4f4f4;
+    position: absolute;
+    margin-left: 21%;
+    top: 35%;
+}
+
+.footer_image {
+    width: 35px;
+}
+
+.label_Class {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.img_div {
+    width: 45px !important;
+    background: rgba(128, 128, 128, 0.22);
+    border-radius: 50%;
+    height: 45px;
+    justify-content: center;
+    display: flex;
+    margin-left: 0% !important;
+    height: 45px !important;
+}
+
+ion-col {
+    padding: 16px 0px 0px 0px !important;
+    flex: 1 !important;
+}
+
+h3 {
+    margin: 9px 0 !important;
+}
+
+ion-item {
+    --inner-border-width: 0 0 0px 0;
+}
+
+p {
+    color: black !important;
+}
+.distance {
+    position: absolute;
+    top: -30px;
+    width: 50%;
+    left: 25%;
+    /* text-align: center; */
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  ion-slide:hover{
+    // background: rgba(205, 9, 9, 0.43);
+    cursor: pointer;
+  }
+
+  .model_slide_content {
+    //   padding-right: 10px !important;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+  
+  .model_image {
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+  }
+  
+  ion-slide {
+    width: 35%!important;
+    background-color:  #FFF;
+    // float: left;
+    // padding-left: 20px!important;
+    // padding-right: 20px!important;
+    // border-radius: 50px!important;
+  }
+
+  .model_title {
+      font-size: 10px !important;
+  }
+  .driver_marker_info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 70px !important;
+      height: 70px !important;
+      max-width: 70px !important;
+      max-height: 70px !important;
+
+  }
+  .personal_info {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+
+      p {
+          margin-top:0px !important;
+          margin-bottom: 5px !important;
+          margin-left: 10px !important;
+      }
+  }
+  .driver_info_window {
+      padding:0px !important;
+      display: flex;
+      flex-direction: column;
+  }
+  .driver_rating {
+      margin-left: 20px !important;
+  }
+ 
+  
+  

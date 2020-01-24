@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon slot="start" expand="icon-only" (click)="dismiss()" name="arrow-back" class="icon_header" size="large">
+      </ion-icon>
+    </ion-buttons>
+    <ion-title>History</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment (ionChange)="segmentValue($event)" mode="md">
+      <ion-segment-button checked value="past">
+        <ion-label text-uppercase>Past Ride</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="upcoming">
+        <ion-label text-uppercase>Up Coming</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content   [ngStyle]="{'background':'url(../../assets/image/login.jpg)','background-size':'cover','background-position':'center'}">
+  <div *ngIf="segmenValue == 'past'" class="historyContent">
+    <ion-card *ngFor="let ride of pastRides" class="historyCards">
+      <div padding-vertical>
+        <ion-item class="dafault_item">
+          <ion-icon name="arrow-dropdown-circle" class="icon_drop" slot="start"></ion-icon>
+          <ion-label>{{ride.startAddress}}</ion-label>
+        </ion-item>
+
+        <ion-item class="dafault_item">
+          <div class="virtical_dash" slot="start"></div>
+          <!-- <ion-thumbnail slot="end">
+            <img src="{{item.image}}">
+          </ion-thumbnail> -->
+          <ion-icon name="logo-model-s" color="secondary" slot="start"></ion-icon>
+
+        </ion-item>
+
+        <ion-item class="dafault_item">
+          <ion-icon name="pin" class="icon_pin" slot="start"></ion-icon>
+          <ion-label>{{ride.endAddress}}</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-text slot="start">{{ride.date.toDate().toUTCString() }}</ion-text>
+
+          <!-- <ion-text slot="start">{{ride.date.split('.')[0]}}</ion-text> -->
+          <ion-text slot="end">${{ride.fare}}</ion-text>
+        </ion-item>
+
+        <ion-item>
+          <!-- <ion-text slot="start"></ion-text> -->
+          <rating slot="end" [(ngModel)]="starsCount" [max]="ride.rating" iconClass="star" fullIcon="☆" emptyIcon="★"
+            [readonly]="false" [disabled]="false" [required]="true" [float]="true"
+            [titles]="['one', 'two', 'three', 'four', 'five']">
+          </rating>
+        </ion-item>
+      </div>
+    </ion-card>
+  </div>
+
+  <div *ngIf="segmenValue == 'upcoming'" class="historyContent">
+    <ion-card *ngFor="let ride of upcomingRides" class="historyCards">
+      <div padding-vertical>
+        <ion-item class="dafault_item">
+          <ion-icon name="arrow-dropdown-circle" class="icon_drop" slot="start"></ion-icon>
+          <ion-label>{{ride.startAddress}}</ion-label>
+        </ion-item>
+
+        <ion-item class="dafault_item">
+          <div class="virtical_dash" slot="start"></div>
+          <!-- <ion-thumbnail slot="end">
+            <img src="{{item.image}}">
+          </ion-thumbnail> -->
+          <ion-icon name="logo-model-s" color="secondary" slot="start"></ion-icon>
+
+        </ion-item>
+
+        <ion-item class="dafault_item">
+          <ion-icon name="pin" class="icon_pin" slot="start"></ion-icon>
+          <ion-label>{{ride.endAddress}}</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-text slot="start">{{ride.date.split('.')[0]}}</ion-text>
+          <ion-text slot="end">${{ride.fare}}</ion-text>
+        </ion-item>
+
+        <!-- <ion-item>
+          <rating slot="end" [(ngModel)]="starsCount" [max]="5" iconClass="star" fullIcon="☆" emptyIcon="★"
+            [readonly]="false" [disabled]="false" [required]="true" [float]="true"
+            [titles]="['one', 'two', 'three', 'four', 'five']">
+          </rating>
+        </ion-item> -->
+      </div>
+    </ion-card>
+  </div>
+
+
+  <!-- <div *ngIf="segmenValue == 'upcoming'" class="historyContent">
+    <ion-card *ngFor="let ride of upcomingRides">
+      <div ion-fixed class="map">
+        <agm-map [latitude]="ride.origin.lat" [longitude]="ride.origin.lng" gestureHandling="cooperative">
+          <agm-direction [origin]="ride.origin" [destination]="ride.destination"></agm-direction>
+        </agm-map>
+      </div>
+
+      <ion-card-content class="content">
+        <span *ngIf="ride.date">{{ ride.date.toDate().toUTCString() }}</span>
+        <span *ngIf="!ride.date">Date not available</span>
+        <span>$ {{ ride.fare }}</span></ion-card-content>
+    </ion-card>
+  </div> -->
+</ion-content>

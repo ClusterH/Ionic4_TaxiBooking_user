@@ -1,0 +1,78 @@
+/**
+*Ionic 4 Taxi Booking Complete App (https://store.enappd.com/product/taxi-booking-complete-dashboard)
+*
+* Copyright © 2019-present Enappd. All rights reserved.
+*
+* This source code is licensed as per the terms found in the
+* LICENSE.md file in the root directory of this source tree.
+*/
+
+
+
+.sc-ion-buttons-md-s ion-button {
+    --margin-start: 5px;
+    --margin-end: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    --padding-start: 5.5em;
+    --padding-end: 5.5em;
+    --height: 35px;
+    --box-shadow: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding-top: 1.5em;
+    padding-bottom: 3em;
+}
+
+ion-button.button.button-outline.button_outline {
+    --border-color:var( --ion-color-facebook) !important;
+    color: var( --ion-color-facebook)  !important;
+}
+ion-button.button.button-outline.button_solid {
+    --border-color: var(--ion-color-google) !important;
+    color: var(--ion-color-google)!important;
+}
+
+ ion-input{
+     background: rgb(250, 255, 189);
+ }
+ .horizontal_line{
+ width: calc(100% - 10%);
+    height: 3px;
+    background: #f4f4f4;
+    top: 28%;
+    display: flex;
+    align-self: center;
+ }
+ .label_Class{
+   justify-content: center;
+    align-items: center;
+    display: flex;
+    align-self: center;
+    position: absolute;
+ }
+ .footer_image{
+       width: 35px;
+ }
+ .img_div{
+   width: 30px !important;
+    background: var(--ion-color-primary-contrast);
+    border-radius: 50%;
+    justify-content: center;
+    display: flex;
+    margin-left: 0% !important;
+    height: 30px !important;
+    align-items: center;
+    color: #86888fb8;
+    border: solid 1px;
+    font-size: 15px;
+ }
+ ion-col.row_div{
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+ }
+ .button-width{
+    width: calc(50% - 8px);
+ }

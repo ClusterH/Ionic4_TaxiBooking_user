@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "179523170886",
+    "firebase_url": "https://iondriverhapp.firebaseio.com",
+    "project_id": "iondriverhapp",
+    "storage_bucket": "iondriverhapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179523170886:android:0afcc65f5750ce25ca5047",
+        "android_client_info": {
+          "package_name": "com.enappd.ioncab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179523170886-561ilorfjmftbgllpc461clij52em56f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enappd.ioncab",
+            "certificate_hash": "60edc1b1e123d06a1d482cf5b0a6ccb74458037a"
+          }
+        },
+        {
+          "client_id": "179523170886-r3h0ijju35psh93g6csu6bkqsh5ej66e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-rtHdnUacKF2O-15OLe5cs4IhxOhduqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179523170886-r3h0ijju35psh93g6csu6bkqsh5ej66e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

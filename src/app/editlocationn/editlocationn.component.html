@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon slot="start" expand="icon-only" (click)="dismiss()" name="arrow-back" class="icon_header"></ion-icon>
+    <ion-title>Edit location</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+    [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions">
+    <agm-marker [latitude]="lat" [longitude]="lng" [animation]="'DROP'">
+      <agm-info-window>
+        <strong>InfoWindow content</strong>
+      </agm-info-window>
+    </agm-marker>
+
+  </agm-map>
+  <ion-searchbar placeholder={{location}} class="background-transparent" [(ngModel)]="searchItem"
+    [showCancelButton]="true" (ionInput)="searcOnChnage()" (ionCancel)="dismiss()" selected="true" autofocus>
+  </ion-searchbar>
+  <ion-card *ngIf="autocompleteItems.length">
+    <ion-list style="box-shadow: 0 0px 6px #bdbdbd!important;">
+      <ion-item *ngFor="let item of autocompleteItems" class="item-requset-ride" tappable (click)="chooseItem(item)">
+        <ion-icon ios="ios-pin" md="md-pin" slot="start" style="margin-top:20px; font-size:1.3em"></ion-icon>
+        <ion-label>
+          <p>{{item}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>

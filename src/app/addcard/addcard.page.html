@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon slot="start" expand="icon-only" (click)="dismiss()" name="arrow-back" class="icon_header" size="large"></ion-icon>
+    </ion-buttons>
+    <ion-title>Add card</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+   </ion-card>
+  <ion-card-content>
+    <ion-list>
+      <ion-item class="item_input">
+        <ion-label position="stacked" color="medium" [ngClass]=" (clicked) ? 'myClass': 'yourClass' ">Credit card
+          number</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+      <ion-item class="item_input">
+        <ion-label position="stacked" color="medium">CVV</ion-label>
+        <ion-input type="number" placeholder="i.e 777"></ion-input>
+      </ion-item>
+      <ion-item class="item_input">
+        <ion-label position="stacked" color="medium">Expiry Date</ion-label>
+        <ion-datetime displayFormat="MM/YYYY" pickerFormat="MMMM YYYY" monthValues="1,2,3,4,5,6,7,8,9,10,11,12" [yearValues]="customYearValues"></ion-datetime>
+       </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-content>
+<ion-footer padding>
+  <ion-button expand="block" type="submit" class="submit_button" (click)="submit()">Add Card</ion-button>
+</ion-footer>

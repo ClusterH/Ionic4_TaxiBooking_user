@@ -1,0 +1,40 @@
+/**
+*Ionic 4 Taxi Booking Complete App (https://store.enappd.com/product/taxi-booking-complete-dashboard)
+*
+* Copyright © 2019-present Enappd. All rights reserved.
+*
+* This source code is licensed as per the terms found in the
+* LICENSE.md file in the root directory of this source tree.
+*/
+
+
+
+.first_div{
+    background: var(--ion-color-all);
+    text-align: center;
+}
+.header-md:after {
+    left: 0;
+    bottom: -8px;
+    background-position: left 0 top 0;
+    position: absolute;
+    width: 100%;
+    height: 8px;
+    background-image: none !important;
+    background-repeat: repeat-x;
+    content: "";
+}
+.h2_class{
+    padding-bottom: 16px;
+    color: white;
+    font-weight: bold;
+}
+ion-thumbnail{
+    margin: 5px 16px 5px 0 !important;
+    width: 45px !important;
+    height: 45px !important;
+}
+ion-item.dafault_item{
+    --inner-border-width: 0 !important;
+    --border-width: 0 0 1px 0 !important;
+}

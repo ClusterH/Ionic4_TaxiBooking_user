@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Request Ride</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="map_card">
+    <ion-item>
+      <div slot="start">
+        <ion-label>
+          <ion-icon name="arrow-dropdown-circle" class="icon_drop"></ion-icon>
+          <div class="virtical_dash" slot="start"></div>
+          <ion-icon name="pin" class="icon_pin"></ion-icon>
+        </ion-label>
+      </div>
+      <ion-label>
+        <p class="horizontal_line">{{serviceProvider.showpickup}}</p>
+        <p>{{serviceProvider.showdestination}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+    (mapClick)="mapClicked($event)" [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions">
+    <agm-direction [origin]="origin" [destination]="destination" [markerOptions]="markerOptions" [renderOptions]="renderOptions">
+    </agm-direction>
+  </agm-map>
+
+</ion-content>
+
+<ion-footer>
+  <div class="distance">Total distance : {{serviceProvider.tripDistance}} km </div>
+
+  <ion-card>
+    <ion-item class="row-border">
+      <ion-icon name="logo-closed-captioning" slot="start" expand="icon-only" class="icon-margin-right icon_color">
+      </ion-icon>
+      <p>Cash</p>
+      <ion-button fill="clear" slot="end" routerLink="/changepayment" class="medium">Change</ion-button>
+    </ion-item>
+
+    <ion-grid no-padding>
+      <ion-row class="row-border">
+        <ion-col size="6" class="col_line" no-padding>
+          <ion-item routerLink="/fareestimate" padding-left>
+            <ion-icon name="calculator" slot="start" expand="icon-only" no-margin class="icon-margin-right icon_color">
+            </ion-icon>
+            <ion-button fill="clear" class="medium">Fare Estimate</ion-button>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="6" no-padding padding-left>
+          <ion-item routerLink="/promo">
+            <ion-icon name="male" slot="start" expand="icon-only" no-margin class="icon-margin-right icon_color">
+            </ion-icon>
+            <ion-button fill="clear" class="medium">Promo Code</ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="checkSchedule === false">
+        <ion-col size="6">
+          <ion-button expand="block" type="submit" class="submit_button" (click)="alertOnSubmit()">Confirm booking
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button expand="block" type="submit" class="submit_button" (click)="OnSubmitSchedule()">Schedule Ride
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="checkSchedule ===true">
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Schedule Date: </ion-label>
+            <ion-datetime display-format="MMM DD, YYYY HH:mm" min="2020-01-01" max="2030-12-31" (ionChange)="dateChanged($event)"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button expand="block" type="submit" class="submit_button" (click)="alertOnSubmitSchedule()">Confirm Schedule Ride</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-footer>
