@@ -223,6 +223,32 @@ p {
   .driver_rating {
       margin-left: 20px !important;
   }
+
+  .userCard{
+    position: absolute;
+    width: 94%;
+    bottom: 0;
+    background: #fff;
+    border-radius: 11px;
+    padding-bottom: 5%;
+    margin: 10px;
+    animation: mymove 2s;
+  
+  .userCardHeader{
+    box-shadow: 2px 2px 2px #e8e4e4;
+  
+  }
+}
+
+  @-webkit-keyframes mymove {
+    from {bottom: -200px;}
+    to {bottom: 20px;}
+  }
+  
+  @keyframes mymove {
+    from {bottom: -200px;}
+    to {bottom: 20px;}
+  }
  
   
   

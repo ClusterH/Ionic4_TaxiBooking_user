@@ -1439,7 +1439,7 @@ export class IoncabServicesService {
     });
   }
 
-  setLoggedInUser(res: any, user: any) {
+    setLoggedInUser(res: any, user: any) {
     console.log("res", res, "user", user);
     this.loggedInUser.id = res.uid;
     this.loggedInUser.phone = res.phone ? res.phone : '';

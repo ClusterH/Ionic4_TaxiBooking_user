@@ -8,7 +8,7 @@
 */
 
 
-import { Component, NgZone, OnInit, ViewChild, ElementRef, OnChanges } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, ElementRef, ApplicationRef, OnChanges } from '@angular/core';
 import { MouseEvent, MapsAPILoader } from '@agm/core';
 import { FormControl } from '@angular/forms';
 // import { Observable } from 'rxjs';
@@ -19,7 +19,8 @@ import { PaymentPageComponent } from '../payment-page/payment-page.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { SetlocationComponent } from '../setlocation/setlocation.component';
 import { ActivatedRoute } from '@angular/router';
-
+import { AuthService } from '../auth.service';
+import { FirestoreService } from '../firestore.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 // import { InfoWindow } from '@agm/core/services/google-maps-types';
 import {HttpClient} from '@angular/common/http';
@@ -125,9 +126,20 @@ export class HomePage implements OnInit {
   arriveDistance: any;
   count_num: any = 0;
   temp: any;
-  check_distance: boolean = false;
+  // check_distance: boolean = false;
   confirm_moving_map: boolean = false;
-  
+  userid: any;
+  giveRate: boolean = false;
+  rating = null;
+  completeGiveRate: boolean = false;
+
+  ratingStars = [
+    { value: '1', fill: 'star-outline' },
+    { value: '2', fill: 'star-outline' },
+    { value: '3', fill: 'star-outline' },
+    { value: '4', fill: 'star-outline' },
+    { value: '5', fill: 'star-outline' }
+  ];
 
   constructor(
     private __zone: NgZone,
@@ -141,8 +153,10 @@ export class HomePage implements OnInit {
     public navCtrl: NavController,
     public route: ActivatedRoute,
     private afs: AngularFirestore,
-    private http: HttpClient
-
+    private http: HttpClient,
+    private auth: AuthService,
+    private firestore: FirestoreService,
+    private applicationRef: ApplicationRef,
   ) {
     if (this.serviceProvider.destination === '') {
       this.pickup = false;
@@ -155,52 +169,114 @@ export class HomePage implements OnInit {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params && params.status == 'complete') {
+        console.log("reset(): constructor");
         this.reset();
       }
     })
   }
 
   ngOnInit() {
+    this.auth.user.subscribe(res => {
+      if (res) {
+        this.userid = res.uid;
+      }
+      // this.checkUserStatus();
+    });
+    console.log("reset(): ngOnInit");
     this.reset();
+  }
+
+  checkUserStatus() {
+    this.serviceProvider.checkStatus(this.userid).subscribe(res => {
+      console.log(res['moveSchTOPas']);
+      //check if the ride is completed, take user to homepage
+      if (res && res['moveSchTOPas'] === true) {
+        this.giveRate = true;
+      }
+      
+      if (this.completeGiveRate === true ) {
+        if(!this.serviceProvider.scheduleDate) {
+          if (this.rating == null) {
+            this.rating = "0";
+          }
+          let value = { rating: this.rating };
+         
+          this.firestore.update('completedRides', res['currentRideID'], value).then(data => {
+            console.log("data", data);
+            // this.rating = null;
+          }).catch(err => {
+            console.log(err.message);
+          });
+        }
+      }
+    });
+  }
+
+  stars(number) {
+    return Array(number).fill(0);
+  }
+
+  selectRating(value) {
+    this.rating = value;
+    console.log(this.rating);
+    for (let v of this.ratingStars) {
+      if (v.value <= value) v.fill = 'star';
+      else v.fill = 'star-outline';
+    }
+    this.applicationRef.tick();
+  }
+
+  confirmRide() {
+    this.completeGiveRate = true;
+    if (this.completeGiveRate === true) {
+      this.checkUserStatus();
+    }
   }
 
   reset() {
     this.__zone.run(() => {
+      console.log("reset():reset");
       this.marker = true;
-      this.destination = null;
-      this.serviceProvider.destinationlatitude = null;
-      this.serviceProvider.destinationlongititude = null;
-      // this.serviceProvider.pickupLocation = 'pickup';
-      this.serviceProvider.pickupLocation = 'destination';
-      // this.pickup = true;
-      this.pickup = false;
-      this.serviceProvider.showdestination = null;
-      this.origin = null;
-      this.serviceProvider.originlatitude = null;
-      this.serviceProvider.originlongititude = null;
+      this.zoom = 15;
       this.lat = null;
       this.lng = null;
       this.changeLat = null;
       this.changeLng = null;
+      this.origin = null;
+      this.destination = null;
+      this.pickup = false;
       this.driver_position = false;
+
+      this.serviceProvider.originlatitude = null;
+      this.serviceProvider.originlongititude = null;
+      this.serviceProvider.destinationlatitude = null;
+      this.serviceProvider.destinationlongititude = null;
+      this.serviceProvider.pickupLocation = 'destination';
+      this.serviceProvider.showdestination = null;
+      this.serviceProvider.scheduleDate = null;
+      this.serviceProvider.tripDistance = null;
+      this.serviceProvider.tripDuration = null;
+      this.serviceProvider.tripStartAddress = null;
+      this.serviceProvider.tripEndAddress = null;
+      
       this.confirm_destination = false;
       this.destination_temp = null;
       this.tripDistance = null;
       this.tripDuration = null;
       this.tripStartAddress = null;
       this.tripEndAddress = null;
-      this.serviceProvider.scheduleDate = null;
-      this.serviceProvider.tripDistance = null;
-      this.serviceProvider.tripDuration = null;
-      this.serviceProvider.tripStartAddress = null;
-      this.serviceProvider.tripEndAddress = null;
+     
       this.confirm_moving_map = false;
-      this.zoom = 15;
+      // this.check_distance = false;
+      this.giveRate = false;
+      this.completeGiveRate = false;
+      this.rating = null;
+
       if(!(this.previous_info_driver == null)) {
         this.previous_info_driver.close();
         this.previous_info_driver = null;
       }
-      this.check_distance = false;
+
       this.getCurrentLoaction();
     })
 
@@ -211,7 +287,6 @@ export class HomePage implements OnInit {
     const loader = await this.serviceProvider.loading('Getting your location..');
     loader.present()
     this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp)
       this.changeLat = resp.coords.latitude
       this.changeLng = resp.coords.longitude
       console.log('changelat:', this.changeLat, 'changelng:', this.changeLng)
@@ -294,9 +369,9 @@ export class HomePage implements OnInit {
   
   async openImageCtrl(name: any, path: any) {
     this.count_num = 0;
-    this.previous_info_driver = null;
+    // this.previous_info_driver = null;
 
-    this.driver_information = null;
+    // this.driver_information = null;
     if (this.confirm_destination) {
       if (this.serviceProvider.showdestination === '') {
         const toast: any = await this.serviceProvider.presentToast('You must select destination location first to request ride');
@@ -323,23 +398,6 @@ export class HomePage implements OnInit {
             for(let i = 0; i<this.driver_informations.length; i++) {
               this.calculateDistance(this.origin, this.driver_informations[i].location, i);
             }
-            
-           
-
-            // doc.forEach((item: any) => {
-            //   console.log("item", item);
-            //   if(item.vehicle_info === name) {
-            //     console.log(item.location.lat, item.location.lng);
-
-            //     let driver_location = { lat: Number(item.location.lat), lng: Number(item.location.lng)};
-
-            //     this.driver_information.push({ name: item.name, model: item.vehicle_info, img: item.profileImg, location: driver_location,  phone: item.phone, license: item.license_info, speed: item.speed });
-            //     console.log('distance', this.arriveDistance);
-
-            //   }
-            // });
-            // console.log("driver_information", this.driver_information);
-            // console.log('distance', this.arriveDistance);
           });
         } else { alert("Cannot find these models! please choose anothers!"); }
       }
@@ -361,30 +419,21 @@ calculateDistance(origin: any, destination: any, index: number) {
           
       }, (response, status) => {
         console.log(response, status);
-          if (status === 'OK') {
-            let arriDistance = response.routes[0].legs[0].distance.text;
-            let arriDuration = response.routes[0].legs[0].duration.text;
-            console.log('arri', arriDistance);
-            if (Number(arriDistance.split('.')[0]) <= 50) {
-              console.log("diddd:", Number(arriDistance.split('.')[0]));
-              this.driver_informations[index].distance = arriDistance;
-              this.driver_informations[index].duration = arriDuration;
-              this.driver_informations[index].check_distance = true;
-              console.log(index,  "-index:", this.driver_informations[index].distance);
-              this.check_distance = true;
-            } 
-            
-              // directionsRenderer.setDirections(response);
-              // If you'll like to display an info window along the route
-              // middleStep is used to estimate the midpoint on the route where the info window will appear
-              // const middleStep = (response.routes[0].legs[0].steps.length / 2).toFixed();
-              // const infowindow2 = new google.maps.InfoWindow();
-              // infowindow2.setContent(`${response.routes[0].legs[0].distance.text} <br> ${response.routes[0].legs[0].duration.text}  `);
-              // infowindow2.setPosition(response.routes[0].legs[0].steps[middleStep].end_location);
-              // infowindow2.open(map);
-          } else {
-              console.log('Directions request failed due to ' + status);
-          }
+        if (status === 'OK') {
+          let arriDistance = response.routes[0].legs[0].distance.text;
+          let arriDuration = response.routes[0].legs[0].duration.text;
+          console.log('arri', arriDistance);
+          if (Number(arriDistance.split('.')[0]) <= 50) {
+            console.log("diddd:", Number(arriDistance.split('.')[0]));
+            this.driver_informations[index].distance = arriDistance;
+            this.driver_informations[index].duration = arriDuration;
+            this.driver_informations[index].check_distance = true;
+            console.log(index,  "-index:", this.driver_informations[index].distance);
+            // this.check_distance = true;
+          } 
+        } else {
+            console.log('Directions request failed due to ' + status);
+        }
       });
     } 
 }
@@ -408,11 +457,11 @@ confirmCurrentTrip() {
   } else {
     alert("Please select trip");
   }
-  
- 
 }
+
 centerChange(event: any) {
-  if (event && !(this.driver_position && this.confirm_destination)) {
+  if (event && !this.confirm_destination) {
+    // if (event && !(this.driver_position && this.confirm_destination)) {
     this.changeLat = Number(event.lat);
     this.changeLng = Number(event.lng);
     console.log('ttt:', this.changeLng, this.changeLat)
@@ -445,26 +494,19 @@ centerChange(event: any) {
             if (this.serviceProvider.pickupLocation === 'destination' && this.confirm_moving_map && !this.confirm_destination ) {
               this.serviceProvider.destinationlatitude = this.changeLat; // service value of destination latitude
               this.serviceProvider.destinationlongititude = this.changeLng; // service value of destination longitude
-
               // if(this.confirm_destination) {
                 this.destination_temp = { lat: this.serviceProvider.destinationlatitude, lng: this.serviceProvider.destinationlongititude }; // local value of destination coords
               // };
-
               this.serviceProvider.showdestination = this.block + ' ' + this.street + ' ' + this.building;
-
             } else {
               this.confirm_moving_map = true;
-
             }
           })
-
         } else {
           alert('No address available!');
         }
-
       }
     });
-   
   }
 }
 
@@ -528,50 +570,30 @@ public onResponse(event: any) {
   this.tripStartAddress = event.routes[0].legs[0].start_address;
   this.tripEndAddress = event.routes[0].legs[0].end_address;
   
-  this.serviceProvider.tripDistance  = this.tripDistance.split('k')[0];
+  // this.serviceProvider.tripDistance  = this.tripDistance.split('k')[0];
+  this.serviceProvider.tripDistance  = this.tripDistance;
   this.serviceProvider.tripDuration = this.tripDuration;
   this.serviceProvider.tripStartAddress = this.tripStartAddress;
   this.serviceProvider.tripEndAddress = this.tripEndAddress;
   console.log(this.serviceProvider.tripStartAddress, this.serviceProvider.tripEndAddress);
 
 
-  setTimeout(() => {
-    this.serviceProvider.tripDistance  = this.tripDistance.split('k')[0];
+  // setTimeout(() => {
+  //   this.serviceProvider.tripDistance  = this.tripDistance;
     
-  }, 5000);
+  // }, 5000);
 }
-
-// public onResponseDriver(event: any) {
-//   // this.count++;
-//   // console.log("event:"+this.count, event);
-//   // if(event.status == "OK") {
-
-//   //   this.driver_informations[this.count].distance = ((event.routes[0].legs[0].distance.text));
-//   //   this.driver_informations[this.count].duration = ((event.routes[0].legs[0].duration.text));
-    
-//   //   // let length = this.driver_information.length;
-//   //   // this.driver_information[this.count_num].distance = this.arriveDistance;
-
-//   //   // this.driver_information[this.count_num].hour = Math.floor((this.driver_information[this.count_num].distance/this.driver_information[this.count_num].speed));
-//   //   // this.driver_information[this.count_num].min = Math.round((this.arriveDistance - (this.driver_information[this.count_num].hour *  this.driver_information[this.count_num].speed)) * 60/this.driver_information[this.count_num].speed);
-
-//   //   // this.count_num++;
-//   //   // this.arriveDistance - arrDis
-//   //   // this.arriveDistance.push({distance: arrDis, index: event.index})
-//   //   console.log("distance_1:", this.driver_informations.distance);
-//   //   console.log("duration:", this.driver_informations.duration);
-
-//   // }
-// }
-
  
   async booking_start(info: any) {
     console.log(info);
     console.log("tripdistance:", this.tripDistance.split('k')[0]);
 
+    const patt1 = /[^a-z]/g;
+
     this.serviceProvider.estimateBooking = {
       duration: info.duration,
-      fare: Number(this.tripDistance.split('k')[0]) * Number(info.price),
+   
+      fare: Number(this.tripDistance.match(patt1).toString().replace(/,/g, "")) * Number(info.price),
       member: info.member,
       driver_id: info.email
     }
@@ -579,18 +601,6 @@ public onResponse(event: any) {
     const profileModal: any = await this.serviceProvider.cabModal(PaymentPageComponent, 'backTransparent');
     profileModal.present();
   }
-
-  
-  // mapTypeIdChange($event: MouseEvent) {
-  //   console.log($event);
-  //   this.confirm_moving_map = true;
-  //   // this.markers.push({
-  //   //   lat: $event.coords.lat,
-  //   //   lng: $event.coords.lng,
-  //   //   draggable: true
-  //   // });
-  // }
- 
 }
 
 interface marker {

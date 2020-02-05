@@ -64,29 +64,13 @@ export class PickupPage implements OnInit {
       lng: this.serviceProvider.destinationlongititude
     }
   }
-
-  // clickedMarker(label: string, index: number) {
-  //   console.log(`clicked the marker: ${label || index}`);
-  // }
-
-  // markerDragEnd(m: marker, $event: MouseEvent) {
-  //   console.log('dragEnd', m, $event);
-  // }
-  // mapClicked($event: MouseEvent) {
-  //   this.markers.push({
-  //     lat: $event.coords.lat,
-  //     lng: $event.coords.lng,
-  //     draggable: true
-  //   });
-  // }
-
+ 
   ngOnInit() {
     this.auth.user.subscribe(res => {
       if (res) {
         this.userid = res.uid;
       }
       this.checkUserStatus();
-
     });
     const driverinfo = this.serviceProvider.driverInfo;
     this.customerInfo = this.serviceProvider.customerLocation;
@@ -95,27 +79,39 @@ export class PickupPage implements OnInit {
     this.giveRate = false;
     this.completeGiveRate = false;
     this.rating = null;
+  }
 
+  reset() {
+    this.giveRate = false;
+    this.completeGiveRate = false;
+    this.rating = null;
+    this.serviceProvider.driverInfo = null;
+    this.serviceProvider.customerLocation = null;
   }
 
   checkUserStatus() {
     this.serviceProvider.checkStatus(this.userid).subscribe(res => {
       //check if the ride is completed, take user to homepage
-      
       if (res && res['rideOn'] === false && this.completeGiveRate === false) {
         this.giveRate = true;
       }
       
-      if (this.completeGiveRate === true) {
-        let value = { rating: this.rating };
-        this.firestore.update('completedRides', res['currentRideID'], value).then(data => {
-          console.log("data", data);
-          // this.rating = null;
+      if (this.completeGiveRate === true ) {
+        if(!this.serviceProvider.scheduleDate) {
+          if (this.rating == null) {
+            this.rating = "0";
+          }
+          let value = { rating: this.rating };
+         
+          this.firestore.update('completedRides', res['currentRideID'], value).then(data => {
+            console.log("data", data);
+            // this.rating = null;
+          }).catch(err => {
+            console.log(err.message);
+          });
+        }
+        this.reset();
         this.route.navigate(['home', 'complete']);
-      })
-        .catch(err => {
-          console.log(err.message);
-        });
       }
     });
   }
@@ -134,36 +130,17 @@ export class PickupPage implements OnInit {
     this.applicationRef.tick();
   }
 
-  disbaleButton() {
-    //this.applicationRef.tick();
-    if (this.rating == null) { return true; }
-    else { return false; }
-  }
+  // disbaleButton() {
+  //   //this.applicationRef.tick();
+  //   if (this.rating == null) { return true; }
+  //   else { return false; }
+  // }
 
   addComment() {
-    // this.loading.show();
-    // this.http.get(this.config.url + "/api/appsettings/create_product_review/?insecure=cool&nonce="
-    //   + this.nonce
-    //   + "&author_name=" + this.formData.name
-    //   + "&author_email=" + this.formData.email
-    //   + "&product_id=" + this.id
-    //   + "&author_content=" + this.formData.description
-    //   + "&rate_star=" + this.rating
-    //   + "&user_id=" + this.shared.customerData.id
-    // ).subscribe((data: any) => {
-    //   this.loading.hide();
-    //   if (data.status == 'ok') {
-    //     this.navCtrl.pop();
-    //   }
-    //   console.log(data);
-    // }, err => {
-    //   this.errorMessage = err.message;
-    // });
     this.completeGiveRate = true;
     if (this.completeGiveRate === true) {
       this.checkUserStatus();
     }
-
   }
 
   async alertOnSubmit() {
@@ -178,13 +155,11 @@ export class PickupPage implements OnInit {
           cssClass: 'secondary',
           handler: res => {
             console.log('Cancel booking');
-            // this.route.navigate(['home']);
           }
         },
         {
           text: 'OK',
           handler: () => {
-            // this.route.navigate(['bookingconfirmation']);
             this.route.navigate(['home']);
           }
         }

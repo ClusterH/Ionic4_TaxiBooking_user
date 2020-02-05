@@ -15,7 +15,7 @@
         [destination]="destination">
       </agm-direction>
     </agm-map>
-    <div class="distance">Total distance : {{serviceProvider.tripDistance}} km </div>
+    <div class="distance">Total distance : {{serviceProvider.tripDistance}} </div>
   </div>
 
   <ion-fab vertical="center" horizontal="end" slot="fixed" class="fab_icon">
@@ -77,7 +77,7 @@
       </ion-label>
     </ion-item>
   </ion-list>
-  <ion-grid *ngIf="giveRate">
+  <ion-grid *ngIf="giveRate && !serviceProvider.scheduleDate">
     <ion-row justify-content-center >
       <ion-col size="5" class="ion-no-padding">
         <p>{{'Driver Rating Here:'}}</p>
@@ -95,5 +95,5 @@
   <ion-button expand="full" type="submit" class="submit_button" (click)="alertOnSubmit()">Cancel Booking</ion-button>
 </ion-footer>
 <ion-footer padding *ngIf="giveRate">
-  <ion-button expand="full" type="submit" class="submit_button" (click)="addComment()" [disabled]="disbaleButton()">Confirm Booking</ion-button>
+  <ion-button expand="full" type="submit" class="submit_button" (click)="addComment()" >Confirm Booking</ion-button>
 </ion-footer>

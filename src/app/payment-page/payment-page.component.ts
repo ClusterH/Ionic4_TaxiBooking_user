@@ -27,9 +27,9 @@ export class PaymentPageComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
   async routeModal() {
-    if (this.serviceProvider.showdestination === '') {
+    if (this.serviceProvider.showdestination === '' || this.serviceProvider.showpickup === '') {
       this.modalCtrl.dismiss();
-      const toast: any = await this.serviceProvider.presentToast('You Must select Destination Location First For Estimate Fare');
+      const toast: any = await this.serviceProvider.presentToast('You Must select PickUp / Destination Location First For Estimate Fare');
       await toast.present();
     } else {
       this.modalCtrl.dismiss();

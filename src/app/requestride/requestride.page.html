@@ -25,15 +25,14 @@
   </ion-card>
 
   <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
-    (mapClick)="mapClicked($event)" [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions">
+    (mapClick)="mapClicked($event)" [fullscreenControl]="false" [fullscreenControlOptions]="screenOptions">
     <agm-direction [origin]="origin" [destination]="destination" [markerOptions]="markerOptions" [renderOptions]="renderOptions">
     </agm-direction>
   </agm-map>
-
 </ion-content>
 
 <ion-footer>
-  <div class="distance">Total distance : {{serviceProvider.tripDistance}} km </div>
+  <div class="distance">Total distance : {{serviceProvider.tripDistance}}</div>
 
   <ion-card>
     <ion-item class="row-border">
@@ -61,7 +60,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="checkSchedule === false">
+      <ion-row *ngIf="!serviceProvider.scheduleDate && checkSchedule === false">
         <ion-col size="6">
           <ion-button expand="block" type="submit" class="submit_button" (click)="alertOnSubmit()">Confirm booking
           </ion-button>
@@ -71,7 +70,7 @@
           </ion-button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="checkSchedule ===true">
+      <ion-row *ngIf="checkSchedule === true">
         <ion-col size="12">
           <ion-item>
             <ion-label>Schedule Date: </ion-label>

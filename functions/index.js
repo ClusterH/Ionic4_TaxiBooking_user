@@ -24,13 +24,10 @@ exports.getDriver = functions.https.onRequest((req, res) => {
       .get()
       .then(querySnapshots => {
         querySnapshots.forEach(doc => {
-          console.log('driver_id1', doc.data().email);
-
           if (
             // doc.data().email === 'driver@enappd.com' // You can add a logic to pick driver here, with some algorithm you have
             doc.data().email === data.driver_email // You can add a logic to pick driver here, with some algorithm you have
           ) {
-            console.log('driver_id', doc.data().email, 'data.driver_id', data.driver_id);
             let obj = doc.data();
             obj["id"] = doc.id;
             driverArray.push(obj);
@@ -244,7 +241,8 @@ exports.completeRide = functions.https.onRequest((req, res) => {
         endAddress: null,
         estimateFire: null,
         tripDistance: null, tripDuration: null,
-        tripSchedule: null
+        tripSchedule: null,
+        moveSchTOPas: req.body.moveSchTOPas,
       })
       .then((data) => {
         console.log('customer updated after ride completion');

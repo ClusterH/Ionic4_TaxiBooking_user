@@ -19,12 +19,12 @@ import { AuthService } from '../auth.service';
 import { FirestoreService } from '../firestore.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-
 @Component({
   selector: 'app-requestride',
   templateUrl: './requestride.page.html',
   styleUrls: ['./requestride.page.scss']
 })
+
 export class RequestridePage implements OnInit {
   data: {
     iconName: string;
@@ -38,7 +38,6 @@ export class RequestridePage implements OnInit {
   }[];
   public lat: Number;
   public lng: Number;
-
   public origin: any;
   public destination: any;
   userid: any;
@@ -50,12 +49,10 @@ export class RequestridePage implements OnInit {
     origin: {
       animation: '\'DROP\'',
       icon: '../../assets/image/origin_marker.png'
-
     },
     destination: {
       animation: '\'DROP\'',
       icon: '../../assets/image/destination_marker.png',
-
     }
   };
   renderOptions = {
@@ -76,7 +73,6 @@ export class RequestridePage implements OnInit {
     public loadCtrl: LoadingController,
     public toastController: ToastController,
     private afs:  AngularFirestore,
-
   ) {
     this.lat = this.serviceProvider.directionlat;
     this.lng = this.serviceProvider.directionlng;
@@ -88,28 +84,25 @@ export class RequestridePage implements OnInit {
       console.log(res);
       if (res) {
         this.userid = res.uid;
-      }
-      this.getDirection();
-
+        this.getDirection();
       // to redirect to further pages if a booking is active
-      this.serviceProvider.checkStatus(this.userid).subscribe((result) => {
-        if (result) {
-          const rideCheck = result['rideOn'];
-          if (rideCheck === true) {
-            this.route.navigate(['bookingconfirmation']);
+        this.serviceProvider.checkStatus(this.userid).subscribe((result) => {
+          if (result) {
+            const rideCheck = result['rideOn'];
+            if (rideCheck === true) {
+              this.route.navigate(['bookingconfirmation']);
+            }
           }
-        }
-      });
+        });
+      }
+      
+      this.checkSchedule = false;
     });
-
-    this.checkSchedule = false;
-
   }
 
   getDirection() {
     if (this.serviceProvider.showpickup === '') {
       this.origin = { lat: this.lat, lng: this.lng };
-
     } else {
       if (
         this.serviceProvider.originlatitude &&
@@ -128,16 +121,7 @@ export class RequestridePage implements OnInit {
       };
     }
   }
-
-  // clickedMarker(label: string, index: number) {
-  //   console.log(`clicked the marker: ${label || index}`);
-  // }
-  // markerDragEnd(m: marker, $event: MouseEvent) {
-  //   console.log('dragEnd', m, $event);
-  // }
-  // mapClicked($event: MouseEvent) {
-  //   console.log('map clicked', $event);
-  // }
+  
   async alertOnSubmit() {
     this.checkSchedule = false;
     const alert = await this.alertCtrl.create({
@@ -173,7 +157,6 @@ export class RequestridePage implements OnInit {
   }
 
   async alertOnSubmitSchedule() {
-    // this.checkSchedule = true;
     if(this.serviceProvider.scheduleDate) {
       const alert = await this.alertCtrl.create({
         header: 'Schedule Booking',
@@ -186,16 +169,15 @@ export class RequestridePage implements OnInit {
             cssClass: 'secondary',
             handler: res => {
               console.log('Cancel booking');
-              this.serviceProvider.tripStartAddress = null;
-              this.serviceProvider.tripEndAddress = null;
-              this.serviceProvider.scheduleDate = null;
+              // this.serviceProvider.tripStartAddress = null;
+              // this.serviceProvider.tripEndAddress = null;
+              // this.serviceProvider.scheduleDate = null;
               this.route.navigate(['home']);
             }
           },
           {
             text: 'Book',
             handler: () => {
-              // this.route.navigate(['bookingconfirmation']);
               this.bookCab(this.checkSchedule);
             }
           }
@@ -206,7 +188,6 @@ export class RequestridePage implements OnInit {
       alert("Select Schedule Date!");
     }
   }
-
 
   async bookCab(checkschedule: boolean) {
     console.log(checkschedule);
@@ -226,6 +207,7 @@ export class RequestridePage implements OnInit {
     let tripInfo = {};
     let obj = {};
     if (checkschedule) {
+      console.log(this.serviceProvider.tripStartAddress, this.serviceProvider.tripEndAddress);
       tripInfo = {
         startAddress: this.serviceProvider.tripStartAddress,
         endAddress: this.serviceProvider.tripEndAddress,
@@ -248,7 +230,6 @@ export class RequestridePage implements OnInit {
         console.log(res);
         console.log(tripInfo);
         console.log(obj);
-
       });
     } else {
       tripInfo = {
@@ -267,7 +248,6 @@ export class RequestridePage implements OnInit {
         driver_email: this.serviceProvider.estimateBooking.driver_id,
         scheduleAvailable: checkschedule,
         scheduleDate: null,
-
       };
 
       console.log(tripInfo);
@@ -300,13 +280,13 @@ export class RequestridePage implements OnInit {
           this.serviceProvider.driverInfo = res;
           console.log('Attempting to book ride with driver ', res)
           this.serviceProvider.customerLocation = obj;
+          this.checkSchedule = false;
           this.route.navigate(['bookingconfirmation']);
         }
       });
   }
 
   dateChanged(event: any) {
-    console.log(event.detail.value);
     this.serviceProvider.scheduleDate = event.detail.value;
     console.log(this.serviceProvider.scheduleDate);
   }

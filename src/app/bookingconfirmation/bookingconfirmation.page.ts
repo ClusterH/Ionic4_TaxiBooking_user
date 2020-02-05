@@ -15,12 +15,13 @@ import { Router } from '@angular/router';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
-// import { AlertController } from '@ionic/angular';
+
 @Component({
   selector: 'app-bookingconfirmation',
   templateUrl: './bookingconfirmation.page.html',
   styleUrls: ['./bookingconfirmation.page.scss']
 })
+
 export class BookingconfirmationPage {
   progress: number = 10;
   userid: any;
@@ -38,14 +39,12 @@ export class BookingconfirmationPage {
     private auth: AuthService,
     public serviceProvider: IoncabServicesService,
     public loadingCtrl: LoadingController,
-    // public actionSheetController: ActionSheetController
   ) {
     this.statusBar.backgroundColorByHexString('#000');
     this.load();
   }
 
   async load() {
-
     this.loader = await this.serviceProvider.loading('Waiting for driver response...');
     this.progress = 10;
     await this.loader.present();
@@ -151,14 +150,7 @@ export class BookingconfirmationPage {
 
       await this.delayAlert.present();
     }
-
-    
   }
-
-
-
-
-
   // go to previous page
   goBack() {
     this.navCtrl.back();
