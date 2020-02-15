@@ -89,7 +89,7 @@ export class RequestridePage implements OnInit {
         this.serviceProvider.checkStatus(this.userid).subscribe((result) => {
           if (result) {
             const rideCheck = result['rideOn'];
-            if (rideCheck === true) {
+            if (rideCheck === true && !this.serviceProvider.schTOPass) {
               this.route.navigate(['bookingconfirmation']);
             }
           }
@@ -143,7 +143,6 @@ export class RequestridePage implements OnInit {
         {
           text: 'Book',
           handler: () => {
-            // this.route.navigate(['bookingconfirmation']);
             this.bookCab(this.checkSchedule);
           }
         }
@@ -169,9 +168,7 @@ export class RequestridePage implements OnInit {
             cssClass: 'secondary',
             handler: res => {
               console.log('Cancel booking');
-              // this.serviceProvider.tripStartAddress = null;
-              // this.serviceProvider.tripEndAddress = null;
-              // this.serviceProvider.scheduleDate = null;
+            
               this.route.navigate(['home']);
             }
           },

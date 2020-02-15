@@ -7,7 +7,6 @@
 * LICENSE.md file in the root directory of this source tree.
 */
 
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 

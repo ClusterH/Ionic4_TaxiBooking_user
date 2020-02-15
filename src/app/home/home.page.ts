@@ -7,12 +7,10 @@
 * LICENSE.md file in the root directory of this source tree.
 */
 
-
 import { Component, NgZone, OnInit, ViewChild, ElementRef, ApplicationRef, OnChanges } from '@angular/core';
 import { MouseEvent, MapsAPILoader } from '@agm/core';
 import { FormControl } from '@angular/forms';
 // import { Observable } from 'rxjs';
-// import { ThrowStmt } from '@angular/compiler';
 import { IoncabServicesService } from '../ioncab-services.service';
 import { ToastController, LoadingController, AlertController, ModalController, NavController } from '@ionic/angular';
 import { PaymentPageComponent } from '../payment-page/payment-page.component';
@@ -25,13 +23,11 @@ import { AngularFirestore } from '@angular/fire/firestore';
 // import { InfoWindow } from '@agm/core/services/google-maps-types';
 import {HttpClient} from '@angular/common/http';
 
-
 declare var google;
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-
 })
 
 export class HomePage implements OnInit {
@@ -68,7 +64,6 @@ export class HomePage implements OnInit {
   tripDuration: string;
   tripStartAddress: string;
   tripEndAddress: string;
-  // estimateTime: { hour: number; min: number }[];
   estimateBooking: { hour: number; min: number; fare: number; member: number; }[];
 
   public changeLat: number;
@@ -126,7 +121,6 @@ export class HomePage implements OnInit {
   arriveDistance: any;
   count_num: any = 0;
   temp: any;
-  // check_distance: boolean = false;
   confirm_moving_map: boolean = false;
   userid: any;
   giveRate: boolean = false;
@@ -144,7 +138,6 @@ export class HomePage implements OnInit {
   constructor(
     private __zone: NgZone,
     public geolocation: Geolocation,
-    // private mapsAPILoader: MapsAPILoader,
     public serviceProvider: IoncabServicesService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
@@ -180,7 +173,7 @@ export class HomePage implements OnInit {
       if (res) {
         this.userid = res.uid;
       }
-      // this.checkUserStatus();
+      this.checkUserStatus();
     });
     console.log("reset(): ngOnInit");
     this.reset();
@@ -189,8 +182,9 @@ export class HomePage implements OnInit {
   checkUserStatus() {
     this.serviceProvider.checkStatus(this.userid).subscribe(res => {
       console.log(res['moveSchTOPas']);
+      this.serviceProvider.schTOPass = res['moveSchTOPas'];
       //check if the ride is completed, take user to homepage
-      if (res && res['moveSchTOPas'] === true) {
+      if (res && this.serviceProvider.schTOPass === true) {
         this.giveRate = true;
       }
       
@@ -203,7 +197,11 @@ export class HomePage implements OnInit {
          
           this.firestore.update('completedRides', res['currentRideID'], value).then(data => {
             console.log("data", data);
-            // this.rating = null;
+            let scheToPass = { moveSchTOPas: false };
+
+            this.firestore.update('customers', this.userid, scheToPass).then( res => {
+              this.reset();
+            })
           }).catch(err => {
             console.log(err.message);
           });
@@ -258,6 +256,7 @@ export class HomePage implements OnInit {
       this.serviceProvider.tripDuration = null;
       this.serviceProvider.tripStartAddress = null;
       this.serviceProvider.tripEndAddress = null;
+      this.serviceProvider.schTOPass = false;
       
       this.confirm_destination = false;
       this.destination_temp = null;
@@ -267,7 +266,6 @@ export class HomePage implements OnInit {
       this.tripEndAddress = null;
      
       this.confirm_moving_map = false;
-      // this.check_distance = false;
       this.giveRate = false;
       this.completeGiveRate = false;
       this.rating = null;
@@ -279,7 +277,6 @@ export class HomePage implements OnInit {
 
       this.getCurrentLoaction();
     })
-
   }
   // google-api_key: 2019_12_27:  AIzaSyB6nXJq45DT9dEg6Ih29hpnqIjKLL8X9EM
 
@@ -369,9 +366,7 @@ export class HomePage implements OnInit {
   
   async openImageCtrl(name: any, path: any) {
     this.count_num = 0;
-    // this.previous_info_driver = null;
-
-    // this.driver_information = null;
+  
     if (this.confirm_destination) {
       if (this.serviceProvider.showdestination === '') {
         const toast: any = await this.serviceProvider.presentToast('You must select destination location first to request ride');
@@ -429,7 +424,6 @@ calculateDistance(origin: any, destination: any, index: number) {
             this.driver_informations[index].duration = arriDuration;
             this.driver_informations[index].check_distance = true;
             console.log(index,  "-index:", this.driver_informations[index].distance);
-            // this.check_distance = true;
           } 
         } else {
             console.log('Directions request failed due to ' + status);
@@ -489,14 +483,11 @@ centerChange(event: any) {
               this.origin = { lat: this.serviceProvider.originlatitude, lng: this.serviceProvider.originlongititude };
 
               this.serviceProvider.showpickup = this.block + ' ' + this.street + ' ' + this.building;
-              // this.serviceProvider.showpickup = JSON.stringify(rsltAdrComponent);
             }
             if (this.serviceProvider.pickupLocation === 'destination' && this.confirm_moving_map && !this.confirm_destination ) {
               this.serviceProvider.destinationlatitude = this.changeLat; // service value of destination latitude
               this.serviceProvider.destinationlongititude = this.changeLng; // service value of destination longitude
-              // if(this.confirm_destination) {
                 this.destination_temp = { lat: this.serviceProvider.destinationlatitude, lng: this.serviceProvider.destinationlongititude }; // local value of destination coords
-              // };
               this.serviceProvider.showdestination = this.block + ' ' + this.street + ' ' + this.building;
             } else {
               this.confirm_moving_map = true;
@@ -592,7 +583,6 @@ public onResponse(event: any) {
 
     this.serviceProvider.estimateBooking = {
       duration: info.duration,
-   
       fare: Number(this.tripDistance.match(patt1).toString().replace(/,/g, "")) * Number(info.price),
       member: info.member,
       driver_id: info.email

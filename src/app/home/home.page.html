@@ -15,7 +15,6 @@
 </ion-header>
 
 <ion-content>
-
   <ion-card class="card_pickup1" (click)="gotoEdit('pickup',true,'modal')" *ngIf="pickup && !confirm_destination">
     <ion-item>
       <ion-icon slot="start" expand="icon-only" name="search"></ion-icon>
@@ -56,8 +55,7 @@
     </ion-item>
   </ion-card>
  
-  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" 
-   (centerChange)="centerChange($event)"  [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions" >
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (centerChange)="centerChange($event)" [streetViewControl]="false">
     <agm-marker [latitude]="changeLat" [longitude]="changeLng" [iconUrl]="markerUrl_trip"  *ngIf="marker && !driver_position && !(origin && origin.lat && destination && destination.lat)">
     </agm-marker>
     <div *ngIf = "confirm_destination">
@@ -102,10 +100,9 @@
   </ion-fab>
 </ion-content>
 
-<ion-footer  *ngIf="!giveRate">
-    <div *ngIf="origin && origin.lat && destination && destination.lat && confirm_destination" class="distance"> Total distance :
-    {{tripDistance}}</div>
-  
+<ion-footer  *ngIf="!serviceProvider.schTOPass">
+  <div *ngIf="origin && origin.lat && destination && destination.lat && confirm_destination" class="distance"> Total distance :{{tripDistance}}</div>
+
   <ion-slides [options]="slideOpts">
     <ion-slide >
       <ion-label class="model_slide_content" (click)="openImageCtrl('SEDAN', 'assets/image/model/sedan_black.jpg')" >
@@ -134,7 +131,7 @@
   </ion-slides>
 </ion-footer>
 
-<ion-footer  *ngIf="giveRate">
+<ion-footer  *ngIf="serviceProvider.schTOPass">
   <ion-card slot="fixed" class="userCard">
     <ion-card-header color="light" class="userCardHeader dFlex">
       <div>
@@ -152,9 +149,6 @@
             <ion-icon [name]="s.fill" (click)="selectRating(s.value)"></ion-icon>
           </ion-col>
         </ion-row>
-        <!-- <ion-button expand="full" color="secondary" (click)="addComment()" [disabled]="disbaleButton()">
-          {{ 'Post Comment'}}
-        </ion-button> -->
       </ion-grid>
 
       <div>

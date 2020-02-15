@@ -92,15 +92,7 @@ export class RegisterPage implements OnInit {
       .catch(err => console.log(err.message));
   }
 
-  google_register() {
-    this.auth.google_SignupUser().then(() => {
-      this.route.navigate(['home']);
-    });
-  }
-0
-  facebook_register() {
-    this.auth.facebook_SignUser().then(() => {
-      this.route.navigate(['home']);
-    });
+  goback_login() {
+    this.route.navigate(['login']);
   }
 }

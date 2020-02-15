@@ -7,7 +7,6 @@
 * LICENSE.md file in the root directory of this source tree.
 */
 
-
 import { Component, OnInit } from '@angular/core';
 import { IoncabServicesService } from '../ioncab-services.service';
 import { ModalController } from '@ionic/angular';
@@ -40,5 +39,4 @@ export class PaymentPageComponent implements OnInit {
   ngOnInit() {
     console.log(this.serviceProvider.estimateBooking);
   }
-  
 }

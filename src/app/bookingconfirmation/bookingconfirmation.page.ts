@@ -7,7 +7,6 @@
 * LICENSE.md file in the root directory of this source tree.
 */
 
-
 import { Component, OnInit } from '@angular/core';
 import { NavController, LoadingController, ToastController, AlertController } from '@ionic/angular';
 import { IoncabServicesService } from '../ioncab-services.service';
@@ -88,7 +87,7 @@ export class BookingconfirmationPage {
     this.serviceProvider.checkStatus(this.userid).subscribe(async res => {
       this.progress = 100;
       console.log(res);
-      if (res && res['rideOn'] === true) {
+      if (res && res['rideOn'] === true && !this.serviceProvider.schTOPass) {
         clearTimeout(this.timeout);
         this.loader.dismiss();
         this.route.navigate(['pickup']);
@@ -104,7 +103,6 @@ export class BookingconfirmationPage {
               {
                 text: 'Ok',
                 handler: () => {
-                  // this.route.navigate(['bookingconfirmation']);
                   this.route.navigate(['home']);
                 }
               }

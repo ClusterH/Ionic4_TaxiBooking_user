@@ -2,15 +2,9 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 
-// import * as functions from 'firebase-functions';
-// import * as admin from 'firebase-admin';
-// import * as cors from 'cors';
-
-
 admin.initializeApp(functions.config().firebase);
-// https://us-central1-iondriverhapp.cloudfunctions.net/getDriver
-//https://us-central1-iondriverhapp.cloudfunctions.net/getDriver
 
+// https://us-central1-iondriverhapp.cloudfunctions.net/getDriver
 exports.getDriver = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     let driverArray = [];
@@ -68,7 +62,6 @@ exports.getDriver = functions.https.onRequest((req, res) => {
 });
 
 // https://us-central1-iondriverhapp.cloudfunctions.net/rejectRide
-//https://us-central1-iondriverhapp.cloudfunctions.net/rejectRide
 exports.rejectRide = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     let uid = req.body.userid;
@@ -83,7 +76,6 @@ exports.rejectRide = functions.https.onRequest((req, res) => {
         requestedUser: admin.firestore.FieldValue.delete()
       })
       .then(() => {
-
         admin
           .firestore()
           .collection("customers")
@@ -107,12 +99,10 @@ exports.rejectRide = functions.https.onRequest((req, res) => {
 });
 
 // https://us-central1-iondriverhapp.cloudfunctions.net/acceptRide
-//https://us-central1-iondriverhapp.cloudfunctions.net/acceptRide
 exports.acceptRide = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     let uid = req.body.custId;
     res.setHeader('Access-Control-Allow-Origin', '*');
-
     // get user info
     admin
       .firestore()
@@ -120,6 +110,42 @@ exports.acceptRide = functions.https.onRequest((req, res) => {
       .doc(uid)
       .update({
         rideOn: true
+      })
+      .then(() => {
+        admin
+          .firestore()
+          .collection("customers")
+          .doc(uid)
+          .get()
+          .then(doc => {
+            res.send(doc.data());
+          });
+      })
+      .catch((err) => {
+        res.send({ status: 'error', message: err });
+      });
+  });
+});
+
+exports.acceptReRide = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    let uid = req.body.customer;
+    let data = req.body;
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // get user info
+    admin
+      .firestore()
+      .collection("customers")
+      .doc(uid)
+      .update({
+        origin:       data.origin,
+        destination:  data.destination,
+        startAddress: data.startAddress,
+        endAddress:   data.endAddress,
+        estimateFire: data.fare,
+        tripSchedule: data.date,
+        tripDistance: data.tripDistance,
+        tripDuration: data.tripDuration,
       })
       .then(() => {
         admin
@@ -198,13 +224,11 @@ exports.drivernotRespond = functions.https.onRequest((req, res) => {
 });
 
 // https://us-central1-iondriverhapp.cloudfunctions.net/completeRide
-//https://us-central1-iondriverhapp.cloudfunctions.net/completeRide
 exports.completeRide = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     let driver = req.body.driverId;
     let customer = req.body.custId;
     let user = req.body.custData;
-    // let date = req.body.date;
     let schedule = req.body.scheduleRide;
     let scheduleDate = req.body.scheduleDate;
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -286,23 +310,16 @@ exports.completeRide = functions.https.onRequest((req, res) => {
   });
 });
 
-
 exports.addModels = functions.https.onRequest((req, res) => {
   console.log(req);
   cors( req, res, () => {
-    // let brand = req.body.brand;
     let model = req.body.model;
     let speed = req.body.speed;
     let price = req.body.price;
     let member = req.body.member;
     let img_path = req.body.img_path;
     res.setHeader('Access-Control-Allow-Origin', '*');
-    // res.header('Access-Control-Allow-Headers', true);
-    // res.header('Access-Control-Allow-Credentials', true);
-    // res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    // res.addTrailers(['Access-Control-Allow-Origin', '*', ('Access-Control-Allow-Headers', true)
-    
-    // add model info
+   
     admin
       .firestore()
       .collection("models")
@@ -323,7 +340,52 @@ exports.addModels = functions.https.onRequest((req, res) => {
         res.send({status:'error', message: err});
       });
   })
- 
+});
+
+exports.chatContents = functions.https.onRequest((req, res) => {
+  cors( req, res, () => {
+    let data = req.body;
+    let chatTime = admin.firestore.Timestamp.fromDate(new Date());
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    if(data.flag === false) {
+      admin
+      .firestore()
+      .collection("chats")
+      .add({
+        fromId: data.fromId,
+        toId: data.toId,
+        time: chatTime,
+        message: data.message,
+        flag: true,
+      })
+      .then((res) => {
+        res.send({ status: 'done' });
+      })
+      .catch(err => {
+        res.send({status:'error', message: err});
+      });
+    } else {
+      admin
+      .firestore()
+      .collection("chats")
+      .add({
+        fromId: data.fromId,
+        toId: data.toId,
+        time: chatTime,
+        message: data.message,
+        flag: false,
+      })
+      .then((res) => {
+        res.send({ status: res });
+      })
+      .catch(err => {
+        res.send({status:'error', message: err});
+      });
+    }
+    
+  })
 });
 
 

@@ -1,4 +1,3 @@
-
 /**
 *Ionic 4 Taxi Booking Complete App (https://store.enappd.com/product/taxi-booking-complete-dashboard)
 *
@@ -7,7 +6,6 @@
 * This source code is licensed as per the terms found in the
 * LICENSE.md file in the root directory of this source tree.
 */
-
 
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -40,7 +38,6 @@ export class IoncabServicesService {
   lat_lng = [];
   latarr = [];
   lanarr = [];
-  // 2019_12_13
   tripDistance: any;
   tripDuration: any;
   tripStartAddress: string;
@@ -50,12 +47,10 @@ export class IoncabServicesService {
   arriveDistance: any;
   driver_information_temp: any = [];
 
-
   mylatlng;
   locatedCountry: string = 'US';
 
   pickupLocation = 'destination'; // default location when app starts
-  // pickupLocation = 'pickup'; // default location when app starts
   originlatitude: any;
   originlongititude: any;
   destinationlatitude: any;
@@ -74,6 +69,8 @@ export class IoncabServicesService {
   };
   driverInfo: any // driver information from firebase function
   customerLocation: any // store location of customer
+
+  schTOPass: boolean;
   country = [
     {
       name: 'United States',
@@ -1418,9 +1415,7 @@ export class IoncabServicesService {
       fare: 0,
       member: 0,
       driver_id: ''
-
     }];
-    
   }
 
   getLatLan(address: string) {

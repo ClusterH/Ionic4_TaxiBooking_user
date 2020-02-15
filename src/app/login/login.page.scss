@@ -6,10 +6,9 @@
 * This source code is licensed as per the terms found in the
 * LICENSE.md file in the root directory of this source tree.
 */
- 
- 
- .ion_Content{
-    background: url('../../assets/image/Home.png') no-repeat;
+ :host {
+ .ion_content{
+    background: url('../../assets/image/back.jpg') no-repeat;
     background-size: cover !important;
     background-position: center !important;
     height: 100%;
@@ -18,53 +17,91 @@
     right: 0;
     left: 0;
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
 } 
-.card_content{
-    height: 300px;
-    background: white;
-    width: 100%;
-    
-}
-.card_img{
- width: 130px;
-    padding: 20px 0px 0px 0px;
+
+ .button-width{
+    width: calc(50% - 8px);
+ }
+
+.sc-ion-buttons-md-s ion-button {
+    --margin-start: 5px;
+    --margin-end: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    --padding-start: 5.5em;
+    --padding-end: 5.5em;
+    --height: 35px;
+    --box-shadow: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding-top: 1.5em;
+    padding-bottom: 3em;
 }
 .image_set{
     justify-content: center;
     align-items: center;
     display: flex;
 }
-.title_center{
-    text-align: center;
-    font-size: 2.5em;
-    font-weight: bold;
-    color: orange;
-    letter-spacing: 1px;
-}
- 
-.button_solid{
---background: orange !important;
---background-activated: orange;
+.card_img{
+ width: 60px;
+    padding: 60px 0px 20px 0px;
 }
 
- .sc-ion-buttons-md-s ion-button{
-  --margin-start: 3px;
-    margin-left: 2px;
-    --margin-end: 3px;
-    margin-right: 2px;
-    --padding-start: 48px;
-    --padding-end: 48px;
-    --height: 2.4rem;
-    --box-shadow: none;
-    text-transform: capitalize;
-    font-size: 12px;
-    font-weight: 500;
-    
+ion-button.button.button-outline.button_outline {
+    --border-color:var( --ion-color-facebook) !important;
+    color: var( --ion-color-facebook)  !important;
+}
+ion-button.button.button-outline.button_solid {
+    --border-color: var(--ion-color-google) !important;
+    color: var(--ion-color-google)!important;
+}
+ .label_Class{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    align-self: center;
+    position: absolute;
+ }
+ .footer_image{
+    width: 35px;
+ }
+ .img_div{
+   width: 30px !important;
+    background: var(--ion-color-primary-contrast);
+    border-radius: 50%;
+    justify-content: center;
+    display: flex;
+    margin-left: 0% !important;
+    height: 30px !important;
+    align-items: center;
+    color: #86888fb8;
+    border: solid 1px;
+    font-size: 15px;
+ }
+ ion-col.row_div{
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
  }
  .button-width{
-    width: calc(50% - 8px);
+    width: calc(50% - 20px);
+    margin: 3px;
  }
+ .button-outline {
+     --border-width: 1px !important;
+ }
+ .button-small {
+     font-size: 10px !important;
+ }
+ .login_btn {
+     box-sizing: initial !important;
+ }
+ .item-has-focus .label-floating.sc-ion-label-md-h {
+     color: rgba(209, 206, 206, 0.685);
+     transform: translate3d(0, 20%, 0) scale(1);
+ }
+ .label-floating.sc-ion-label-md-h, .label-stacked.sc-ion-label-md-h {
+     margin-bottom: -15px;
+ }
+}

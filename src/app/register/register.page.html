@@ -1,87 +1,66 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button color="light"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Register</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content padding>
-  <div class="buttons_center">
-    <ion-button slot="start" fill="solid" class="button_outline button-width" (click)="facebook_register()">
-      <ion-icon name="logo-facebook" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button slot="end" fill="solid" class="button_solid button-width" danger (click)="google_register()">
-      <ion-icon name="logo-googleplus" slot="icon-only"></ion-icon>
+  <div class="ion_content">
+    <div class="header_nav" padding>
+      <div (click)="goback_login()">
+        <ion-img src="assets/image/left_arrow.png" class="arrow_img"></ion-img>
+      </div>  
+      <ion-title>Register</ion-title>
+    </div>
+
+    <ion-grid style="margin-top: 20px; padding: 20px;" >
+      <ion-row>
+        <ion-col size="6">
+          <ion-item class="item_input">
+            <ion-label position="floating" padding-bottom style="--color: white; font-size: 12px;">FIRST NAME</ion-label>
+            <ion-input type="text" [(ngModel)]="user.first_name" style="--color: #fff;"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item class="item_input">
+            <ion-label position="floating" padding-bottom style="--color: white; font-size: 12px;">LAST NAME</ion-label>
+            <ion-input type="text" [(ngModel)]="user.last_name" style="--color: #fff;"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item class="item_input">
+            <ion-label position="floating" padding-bottom style="--color: white; font-size: 12px;">EMAIL</ion-label>
+            <ion-input type="email" [(ngModel)]="user.email" style="--color: #fff;"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="4">
+          <ion-item class="item_input">
+            <ion-label position="floating" padding-bottom style="--color: white; font-size: 12px;">&nbsp;</ion-label>
+            <ion-select [interfaceOptions]="customAlertOptions" interface="alert" placeholder="US+1" okText="Okay!"  [(ngModel)]="user.area" style="color: #fff !important;">
+              <ion-select-option *ngFor="let item of data" [value]="item.dial_code">{{ item.code }}{{ item.dial_code }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size="8">
+          <ion-item class="item_input">
+            <ion-label position="floating" padding-bottom style="--color: white; font-size: 12px;">Mobile</ion-label>
+            <ion-input type="number" [(ngModel)]="user.phone" style="--color: #fff;"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item class="item_input">
+            <ion-label position="floating" padding-bottom style="--color: white; font-size: 12px;">PASSWORD</ion-label>
+            <ion-input type="password" [(ngModel)]="user.password" style="--color: #fff;"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button expand="full" shape="round" type="submit" [disabled]="disabled" class="submit_button" (click)="registerUser()">Register
+      <span *ngIf="spinner">
+        <ion-spinner name="lines"></ion-spinner>
+      </span>
     </ion-button>
   </div>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" class="row_div">
-        <div class="horizontal_line"></div>
-        <div class="label_Class">
-          <p class="img_div">OR</p>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid padding-top>
-    <ion-row>
-      <ion-col size="6">
-        <ion-item class="item_input">
-          <ion-label position="stacked" padding-bottom color="medium">FIRST NAME</ion-label>
-          <ion-input type="text" [(ngModel)]="user.first_name"></ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item class="item_input">
-          <ion-label position="stacked" padding-bottom color="medium">LAST NAME</ion-label>
-          <ion-input type="text" [(ngModel)]="user.last_name"></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-item class="item_input">
-          <ion-label position="stacked" padding-bottom color="medium">
-            EMAIL</ion-label>
-          <ion-input type="email" [(ngModel)]="user.email"></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size="4">
-        <ion-item>
-          <ion-label position="stacked" padding-bottom color="medium">Area</ion-label>
-          <ion-select [interfaceOptions]="customAlertOptions" interface="alert" placeholder="US+1" okText="Okay!"  [(ngModel)]="user.area">
-            <ion-select-option *ngFor="let item of data" [value]="item.dial_code">{{ item.code }}{{ item.dial_code }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-col>
-      <ion-col size="8">
-        <ion-item class="item_input">
-          <ion-label position="stacked" padding-bottom color="medium">Mobile</ion-label>
-          <ion-input type="number" [(ngModel)]="user.phone"></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-item class="item_input">
-          <ion-label position="stacked" padding-bottom color="medium">PASSWORD</ion-label>
-          <ion-input type="password" [(ngModel)]="user.password"></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-content>
-<ion-footer padding>
-  <ion-button expand="block" type="submit" [disabled]="disabled" class="submit_button" (click)="registerUser()">Next
-    <span *ngIf="spinner">
-      <ion-spinner name="lines"></ion-spinner>
-    </span>
-  </ion-button>
-</ion-footer>

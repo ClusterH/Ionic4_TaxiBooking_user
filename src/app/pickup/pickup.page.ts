@@ -52,8 +52,6 @@ export class PickupPage implements OnInit {
     private route: Router,
     private applicationRef: ApplicationRef,
     private firestore: FirestoreService,
-
-
   ) {
     this.origin = {
       lat: this.serviceProvider.originlatitude,
